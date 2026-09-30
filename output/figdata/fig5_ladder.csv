@@ -1,0 +1,7 @@
+rung,label,scale,estimate,ci_lo,ci_hi,n,n_treated,n_control,events,rmst_estimate,rmst_ci_lo,rmst_ci_hi,rmst_events,note
+0,"original analysis (dummy T, imputed TNBC, binary 5y)",risk difference (pp),-7.614571092831963,-16.618267598875207,1.7707264127389195,226,115,111,34,26.460826256107797,-28.571611028686892,84.7786847175083,25,the original analysis's design
+1,+ real chemotherapy receipt (treatment_type),risk difference (pp),-10.308385308385308,-20.92398603276927,-0.1593127520777041,226,148,78,34,40.05273972890075,-21.0410727871,105.91362529841447,25,T replaced by therapy actually recorded
+2,+ TNBC from measured receptors only,risk difference (pp),-9.112825458052072,-24.040826673821837,4.839886193006456,156,122,34,21,42.19594811461616,-56.52168999602773,164.78207802603862,15,70 imputation-derived patients removed
+3,+ RMST with IPCW instead of censoring-blind binary,RMST (days),42.19594811461616,-56.52168999602773,164.78207802603862,156,122,34,15,42.19594811461616,-56.52168999602773,164.78207802603862,15,no landmark yet: time zero still at diagnosis
+4,"+ day-90 landmark, treatment fixed at day 90",RMST (days),54.64180779541971,-35.561448611365115,154.5348632250753,136,90,46,16,54.64180779541971,-35.561448611365115,154.5348632250753,16,immortal time removed
+5,"+ confounding adjustment (clinical set, primary estimator)",RMST (days),55.04066052168196,-24.37669886329377,132.51856735886503,136,90,46,16,55.04066052168196,-24.37669886329377,132.51856735886503,16,primary specification

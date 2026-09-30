@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+
+# LaTeX build products (python run_all.py --compile)
+paper/*.aux
+paper/*.log
+paper/*.out
+paper/*.toc
+paper/*.pdf
+paper/*.synctex.gz
+paper/*.build-output.txt
+paper/validation/
+
+# Reduced smoke runs and stress-study restart checkpoints
+output/smoke*/
+output/*checkpoint*

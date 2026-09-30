@@ -1,0 +1,6 @@
+,ER,PR,HER2
+Positive,801,695,180
+Negative,237,343,762
+Equivocal,2,4,24
+Conflicting,8,5,18
+Not tested,1,2,65

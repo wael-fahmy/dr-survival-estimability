@@ -1,0 +1,25 @@
+arm,arm_label,adjustment,primary_set,component,treatment_arm,n_parameters,n_available,n_available_per_training_fold,params_per_observation,ridge,effective_df,effective_df_per_observation
+TNBC_chemo,Chemotherapy in TNBC,CLINICAL,True,outcome model m_a,0,25,20,16,1.56,45.955882352941174,9.06173991235794,0.57
+TNBC_chemo,Chemotherapy in TNBC,CLINICAL,True,outcome model m_a,1,25,44,35,0.71,45.955882352941174,9.63243088347208,0.27
+TNBC_chemo,Chemotherapy in TNBC,CLINICAL,True,propensity model e(X),-1,25,136,108,0.23,45.955882352941174,,
+TNBC_chemo,Chemotherapy in TNBC,CLINICAL,True,censoring Cox on X (per arm baseline),-1,24,113,90,0.27,45.955882352941174,,
+TNBC_chemo,Chemotherapy in TNBC,EXISTING,False,outcome model m_a,0,18,20,16,1.12,23.823529411764707,9.140460468030392,0.57
+TNBC_chemo,Chemotherapy in TNBC,EXISTING,False,outcome model m_a,1,18,44,35,0.51,23.823529411764707,10.653374035106959,0.3
+TNBC_chemo,Chemotherapy in TNBC,EXISTING,False,propensity model e(X),-1,18,136,108,0.17,23.823529411764707,,
+TNBC_chemo,Chemotherapy in TNBC,EXISTING,False,censoring Cox on X (per arm baseline),-1,17,113,90,0.19,23.823529411764707,,
+TNBC_chemo,Chemotherapy in TNBC,UNION,False,outcome model m_a,0,42,20,16,2.62,129.7058823529412,8.5644193471332,0.54
+TNBC_chemo,Chemotherapy in TNBC,UNION,False,outcome model m_a,1,42,44,35,1.19,129.7058823529412,10.550837060768947,0.3
+TNBC_chemo,Chemotherapy in TNBC,UNION,False,propensity model e(X),-1,42,136,108,0.39,129.7058823529412,,
+TNBC_chemo,Chemotherapy in TNBC,UNION,False,censoring Cox on X (per arm baseline),-1,41,113,90,0.45,129.7058823529412,,
+ALL_chemo,"Chemotherapy, whole cohort",CLINICAL,True,outcome model m_a,0,28,264,211,0.13,28.0,24.05365576754627,0.11
+ALL_chemo,"Chemotherapy, whole cohort",CLINICAL,True,outcome model m_a,1,28,189,151,0.19,28.0,18.80933627083527,0.12
+ALL_chemo,"Chemotherapy, whole cohort",CLINICAL,True,propensity model e(X),-1,28,988,790,0.04,28.0,,
+ALL_chemo,"Chemotherapy, whole cohort",CLINICAL,True,censoring Cox on X (per arm baseline),-1,27,848,678,0.04,28.0,,
+ALL_chemo,"Chemotherapy, whole cohort",EXISTING,False,outcome model m_a,0,25,264,211,0.12,25.0,21.752409272972816,0.1
+ALL_chemo,"Chemotherapy, whole cohort",EXISTING,False,outcome model m_a,1,25,189,151,0.17,25.0,17.23149482586147,0.11
+ALL_chemo,"Chemotherapy, whole cohort",EXISTING,False,propensity model e(X),-1,25,988,790,0.03,25.0,,
+ALL_chemo,"Chemotherapy, whole cohort",EXISTING,False,censoring Cox on X (per arm baseline),-1,24,848,678,0.04,25.0,,
+ALL_chemo,"Chemotherapy, whole cohort",UNION,False,outcome model m_a,0,52,264,211,0.25,52.0,39.58868331769177,0.19
+ALL_chemo,"Chemotherapy, whole cohort",UNION,False,outcome model m_a,1,52,189,151,0.34,52.0,29.535520400266396,0.2
+ALL_chemo,"Chemotherapy, whole cohort",UNION,False,propensity model e(X),-1,52,988,790,0.07,52.0,,
+ALL_chemo,"Chemotherapy, whole cohort",UNION,False,censoring Cox on X (per arm baseline),-1,51,848,678,0.08,52.0,,

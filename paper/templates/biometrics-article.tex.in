@@ -1,0 +1,443 @@
+% Generated through scripts/22_write_biometrics.py. Edit this template, not numerical output.
+\documentclass[12pt,letterpaper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,graphicx,booktabs,array,setspace}
+\usepackage[authoryear,round]{natbib}
+\usepackage[hidelinks]{hyperref}
+\setstretch{1.85}
+\setlength{\parindent}{1.5em}
+\setlength{\parskip}{0pt}
+\newcommand{\ind}{\mathbf{1}}
+\begin{document}
+\pagenumbering{roman}
+\begin{titlepage}
+\centering
+\vspace*{1cm}
+{\Large Design and outcome-model estimability in doubly robust survival analysis: a breast cancer reanalysis\par}
+\vspace{1cm}
+Wael Fahmy$^{*,\dagger}$, Elena Krikun$^{\dagger}$, and Abedalrhman Alkhateeb\par
+Department of Computer Science, Lakehead University\par
+955 Oliver Road, Thunder Bay, Ontario P7B 5E1, Canada\par
+\vspace{1cm}
+$^*$Corresponding author: \href{mailto:wfahmy@lakeheadu.ca}{wfahmy@lakeheadu.ca}\par
+Contributing authors: \href{mailto:ekrikun@lakeheadu.ca}{ekrikun@lakeheadu.ca};
+\href{mailto:aalkhate@lakeheadu.ca}{aalkhate@lakeheadu.ca}\par
+$^\dagger$These authors contributed equally.\par
+\vfill
+Running title: Design and estimability in survival analysis\par
+Article type: Biometric Practice\par
+\end{titlepage}
+\noindent\textbf{Summary.}
+Doubly robust survival estimators require nuisance models that the available information can support.
+We examine design and estimator dependence in TCGA breast cancer data.
+Treatment indicators disagree for @@discordant@@ of @@n_original@@ patients;
+@@censored_pct@@\% have unobserved five-year binary outcomes; and receptor imputation expands
+the triple-negative subgroup from @@tnbc_measured@@ directly measured patients to @@tnbc_imputed@@.
+We estimate adjusted restricted mean survival time (RMST) contrasts over 1095 days after a day-90 landmark.
+Weighting-only estimates are @@tn_km_round@@ days (95\% bootstrap interval: @@tn_km_ci_round@@)
+in triple-negative disease and @@all_km_round@@ days (@@all_km_ci_round@@) in the whole cohort.
+A Cox outcome-model benchmark yields @@tn_cox_round@@ and @@all_cox_round@@ days, respectively,
+demonstrating material model dependence in the smaller population.
+A parameter-to-information ratio summarizes the burden on complete-outcome regressions within cross-fitting.
+Its simulation-calibrated warning level is @@rho_threshold@@ (@@rho_ci@@) for the original regime;
+additional simulations examine covariate-dependent censoring, delayed benefit and nonlinear misspecification.
+The ratio does not certify estimator validity or replace weight diagnostics.
+The contribution is a reproducible workflow that separates design, nuisance-model support and estimator stability
+before interpreting observational survival contrasts.
+
+\noindent\textbf{Key words:} Causal inference; Censoring; Doubly robust estimation; Landmark analysis; Nuisance estimation; Restricted mean survival time.
+\clearpage
+\pagenumbering{arabic}
+
+\section{Introduction}
+Public oncology cohorts invite treatment-effect questions that their clinical records were not necessarily
+assembled to answer \citep{tcga}. Doubly robust estimation can reduce dependence on particular nuisance models
+under appropriate assumptions \citep{chernozhukov,zhang}. It cannot resolve ambiguous treatment coding,
+unobserved fixed-horizon outcomes, or a mismatch between treatment classification and follow-up origin.
+Cross-fitting also does not guarantee satisfactory finite-sample performance when the outcome regression
+has little information.
+
+These problems are concrete in TCGA-BRCA. Two treatment indicators disagree for @@discordant@@ of
+@@n_original@@ patients. A censoring-blind five-year mortality indicator assigns survival to
+@@n_censored@@ patients whose status at that horizon is unknown. Imputing receptor status expands
+triple-negative breast cancer (TNBC) from @@tnbc_measured@@ directly measured patients to @@tnbc_imputed@@.
+These choices affect both the analysis population and the scientific question before an estimator is selected.
+
+We organize the reanalysis around a sequence: specify the comparison, audit its observed-data construction,
+account for censoring, examine information for nuisance estimation, and assess disagreement across estimators.
+A landmark and an RMST contrast make time zero and the analysis horizon explicit
+\citep{dafni,hernantrial,conner}. Unadjusted Kaplan--Meier, an adjusted Cox outcome model,
+weighting-only survival estimation, and augmented inverse probability weighting (AIPW) are compared on
+the same time scale. Simulation evaluates bias, precision, coverage and sensitivity rather than prediction accuracy.
+
+Our diagnostic contribution is a parameter-to-information ratio for the complete-outcome regression
+inside the studied AIPW estimator. Unlike prediction-model sample-size criteria
+\citep{peduzzi,riley,vansmeden}, its calibration target is adjustment-set sensitivity relative to
+sampling variability. It is a warning indicator, not a universal sample-size rule or an estimator-selection
+theorem. Study-specific tools such as REFINE2 address the broader need to evaluate methods under realistic
+data structures \citep{refine}. We add independent stress scenarios to examine how far the original
+calibration can be transported.
+
+\section{Materials and Methods}
+\subsection{Analysis workflow and data}
+Figure~\ref{fig:workflow} summarizes the workflow from input records to interpretation.
+We use archived Genomic Data Commons clinical and follow-up exports and an earlier derived
+UCSC Xena overall-survival table. The supplied survival table is reconciled with clinical records;
+the original Xena export and original high-dimensional omics matrices are not included.
+The earlier molecular adjustment set is supplied as a derived input, not reselected in this study.
+Web Appendices B and I describe provenance and the exclusion ledger.
+
+Receptor records retain positive, negative, equivocal, conflicting and untested states.
+TNBC requires all three receptors to be directly recorded as negative; cohort-defining receptors
+are never imputed. Indeterminate receptors exclude patients from the corresponding subgroup,
+but not automatically from the whole-cohort chemotherapy analysis.
+
+Chemotherapy and its first recorded start are derived from structured treatment-type and initiation-date fields.
+The field is interpretable for this comparison but has not been validated against an external record standard.
+Patients who die or are censored before day 90 are excluded, as are chemotherapy recipients without
+a usable initiation date. Exposure is fixed at day 90 and follow-up is reset to that date.
+Later initiators remain in the non-initiator group. We report TNBC and the whole cohort without
+designating either population primary. Hormone therapy is a different treatment question and is not estimated here.
+
+\subsection{Target contrast and assumptions}
+Let $L=1$ denote eligibility for the analysis at the day-90 landmark, including being alive,
+under follow-up and having classifiable treatment status; TNBC additionally requires measured receptors.
+Let $A$ indicate chemotherapy initiation by day 90 and $X$ denote the adjustment covariates.
+Survival and censoring times from the landmark are $T$ and $C$; we observe
+$\widetilde T=\min(T,C)$ and $\delta=\ind(T\le C)$.
+The statistical target is
+\begin{equation}
+\Delta(\tau)=E_{X\mid L=1}\left[\int_0^\tau
+\{S(t\mid A=1,X,L=1)-S(t\mid A=0,X,L=1)\}\,dt\right],
+\label{eq:target}
+\end{equation}
+with $\tau=1095$ days primary and 1825 days secondary. It compares initiation status by the landmark,
+not chemotherapy with a sustained no-chemotherapy strategy.
+Identification requires treatment positivity, positive censoring survival through the horizon,
+and $C\perp T\mid A,X,L=1$. Causal interpretation additionally requires consistency for a
+sufficiently specified treatment history and conditional exchangeability \citep{hernanbook}.
+
+Landmarking avoids crediting follow-up before classification to the treated group, but does not
+randomize treatment. Treated patients are prevalent users \citep{ray}; early treatment may affect
+reaching the landmark. Conditioning on eligibility can therefore induce selection.
+Neither the number excluded nor a second landmark bounds this bias.
+The analysis does not emulate a trial assigning treatment at diagnosis or among untreated patients at day 90.
+
+\subsection{Adjustment and preprocessing}
+The primary clinical adjustment set represents age, stage, T, N and M category, calendar era and contributing site.
+Site can proxy case mix, treatment practice, care and follow-up; association with treatment and outcome alone
+does not establish confounding \citep{vanderweele}. Grade is entirely missing and a tumor-size field
+is unavailable; T category is a coarse proxy. The earlier multimodal set and its union with the clinical
+set are sensitivity specifications. Prognostic feature selection does not establish a valid confounder set.
+
+Clinical continuous and ordinal missing values use median replacement with missingness indicators;
+stage and TNM categories have fixed ordinal coding, and small sites are pooled.
+The supplied earlier feature matrix uses its archived preprocessing, with remaining nonfinite values replaced
+as documented in Web Appendix A. Clinical encoding, imputation and the supplied feature set are held fixed
+for the reported resampling analysis. For AIPW, propensity/outcome scaling is computed on the analysis
+matrix, while fitted regression coefficients and censoring-model training use the training folds.
+This is not a fully nested feature-learning or preprocessing pipeline.
+The clinical-first and weighting-only-first orderings were chosen after estimates were available;
+they were not prospectively registered. Both estimators and all adjustment sets are retained.
+
+\subsection{Survival estimators and comparator design}
+The primary estimator combines stabilized treatment weights with time-varying inverse censoring weights
+in a Kaplan--Meier product limit \citep{robins,conner}. Write $e(X)=\Pr(A=1\mid X,L=1)$,
+$G(t\mid A,X)=\Pr(C>t\mid A,X,L=1)$ and $w_i=\Pr(A=A_i\mid L=1)/\Pr(A=A_i\mid X_i,L=1)$.
+At the observed event times $t_j$ in arm $a$,
+\begin{equation}
+\widehat S_a(t)=\prod_{t_j\le t}\left[
+1-\frac{\sum_{i:A_i=a}w_i\ind(\widetilde T_i=t_j,\delta_i=1)/\widehat G(t_j^-\mid a,X_i)}
+{\sum_{i:A_i=a}w_i\ind(\widetilde T_i\ge t_j)/\widehat G(t_j^-\mid a,X_i)}
+\right].\label{eq:km}
+\end{equation}
+Integrating the two curves gives an RMST contrast. Propensity is ridge logistic;
+censoring uses a ridge Cox model stratified by treatment with shared covariate coefficients.
+Both are fitted on the full analysis sample for this estimator. An arm-only censoring curve cancels
+within each risk-set ratio, whereas covariate-conditional censoring weights do not.
+Weighting-only estimation is not doubly robust.
+
+The sensitivity estimator is a five-fold cross-fitted AIPW estimator of a complete restricted outcome:
+death observed by $\tau$, or follow-up reaching $\tau$. Outcome regressions are IPCW-weighted ridge
+least squares fitted within each treatment arm. Before truncation, its equation is doubly robust
+in propensity and outcome regression conditional on a correct censoring model.
+It omits the additional censoring augmentation used in more general survival estimators
+\citep{bai,zhang}; Web Appendix A supplies the equation and expectation identity.
+Cross-fitting alone does not establish nuisance-rate conditions or eliminate regularization bias.
+
+Two benchmarks address different aspects of model dependence. Unadjusted Kaplan--Meier RMST describes
+the observed treatment groups without confounder control. The adjusted outcome benchmark fits
+$h(t\mid A,X)=h_0(t)\exp(\theta A+\beta^\top X)$ \citep{cox}, with an unpenalized treatment
+coefficient and ridge-penalized standardized covariates. Its predicted survival under each treatment is
+standardized over the same analysis population and integrated to the same $\tau$.
+Thus its comparison with the adjusted estimators is in RMST days, not between a hazard ratio and a mean difference.
+This death-hazard model is distinct from the Cox censoring model used in weighting.
+
+Propensity limits are 0.01/0.99 for weighted KM and 0.02/0.98 for AIPW; censoring survival is floored at 0.05.
+AIPW caps positive combined inverse weights at the 99th percentile and clips outcome predictions and
+the final contrast to feasible ranges. These devices can introduce bias. We vary each separately and jointly.
+The ridge rule, clipping conventions, weighting diagnostics and exploratory proportional-hazards screens
+are specified in Web Appendices A, C, D and G.
+
+\subsection{Information diagnostic and simulation assessment}
+For $p$ outcome-model parameters, including the intercept after constant columns are removed,
+$K$ folds and $c_{\min}$ complete restricted outcomes in the smaller treatment arm, define
+\begin{equation}
+\rho=\frac{p}{c_{\min}(1-1/K)}.\label{eq:rho}
+\end{equation}
+The denominator is an expected training-fold count; actual partitions differ.
+The diagnostic precedes effect-model fitting but is not outcome-blind because completeness depends
+on follow-up and event status. It applies to this complete-outcome regression, not automatically to
+survival learners that use censored observations differently. We report effective degrees of freedom
+from the actual Cox-weighted outcome fits beside nominal dimension.
+
+The original calibration has 32 cells crossing sample sizes 150, 300, 600 and 1000,
+covariate dimensions 10, 25, 50 and 75, and two event-rate settings, with 60 replicates per cell.
+Covariates are Gaussian, treatment is logistic, survival exponential and censoring covariate-independent.
+The first three covariates contain the treatment-assignment predictors, and all three nested adjustment
+sets retain them. The calibration target is the mean within-replicate range across adjustment sets divided
+by the full-set estimator's sampling standard deviation. A log-linear fit against $\rho$ defines the crossing
+at 0.50, a chosen warning convention. Cell-bootstrap intervals, other crossing levels and penalty sensitivities
+are reported in Web Appendix F. This is not a calibration to acceptable bias or coverage.
+
+We add six independent stress cells: sample sizes 136 and 988 with 24 and 27 covariates, respectively,
+crossed with covariate-dependent censoring under proportional hazards, delayed treatment benefit,
+and heavy-tailed covariates with nonlinear propensity, survival and censoring mechanisms.
+Each cell uses @@stress_reps@@ replicates and @@stress_boot@@ inner patient bootstraps.
+Baseline hazards are calibrated to expected event counts near 16 or 72.
+Analytic conditional RMST provides the replicate's covariate-standardized truth.
+We compare all four estimators using bias, root mean squared error (RMSE), interval coverage,
+standard-error calibration, failures and adjustment-set sensitivity. Monte Carlo uncertainty is reported,
+including Wilson intervals for coverage. These scenarios test behavior outside the original grid;
+they do not supply external clinical validation. Web Appendix G gives all mechanisms and results.
+
+\subsection{Uncertainty and sensitivity analyses}
+Clinical contrast intervals are patient-level percentile bootstrap intervals from 2000 replicates,
+refitting the estimators on each resampled fixed covariate matrix. New KM/Cox benchmarks use the same
+bootstrap draws as each other; existing estimators retain their documented seeds.
+No synthetic oversampling is used. The original operating-point simulation uses 500 replicates per scenario
+with 500 inner bootstraps, and is retained separately from the new stress study.
+Additional checks vary adjustment sets, censoring models, stabilizers, landmark and horizon, and repeat
+AIPW over 50 partitions and the core analysis over six seeds.
+The correction ladder changes one design component at a time on a common RMST scale; its rungs need
+not have an unchanged target. Exploratory heterogeneity is retained descriptively in Web Appendix H;
+its earlier fixed-score intervals do not support confirmatory inference.
+
+\section{Results}
+\subsection{Cohort construction and observed follow-up}
+Of @@n_original@@ patients, @@excluded_landmark@@ do not reach the landmark,
+@@excluded_missing_date@@ have chemotherapy without a usable start date, and @@excluded_prediagnosis@@
+have implausible prediagnosis starts, leaving @@n_all@@.
+Of these, @@n_all_treated@@ initiated chemotherapy by day 90 and @@later_starts@@ initiate later.
+TNBC contains @@n_tn@@ patients, with @@n_tn_treated@@ initiators and @@n_tn_control@@ non-initiators.
+Deaths within the primary horizon number @@events_tn@@ and @@events_all@@ in TNBC and the whole cohort.
+Only @@targeted_n@@ HER2-positive patients initiated targeted therapy by the landmark; no targeted-therapy contrast is estimated.
+
+Median reverse-Kaplan--Meier follow-up in the original cohort is @@median_fu@@ days.
+At five years, @@observed_alive@@ patients are observed alive without a subsequent recorded death,
+@@deaths_5y@@ died by that horizon, @@deaths_later@@ die later and therefore survived the horizon,
+and @@n_censored@@ are censored earlier. Only the last group has unknown five-year status.
+Coding them as survivors is unjustified even under independent censoring.
+Web Appendix B presents the cohort ledger and follow-up figures.
+
+\subsection{Same-horizon estimator comparison}
+Table~\ref{tab:comparison} gives all four estimators under the clinical specification.
+In TNBC, weighting-only estimation gives @@tn_km@@ days (95\% interval: @@tn_km_ci@@),
+and AIPW gives @@tn_aipw@@ (@@tn_aipw_ci@@). The standardized Cox estimate is
+@@tn_cox@@ (@@tn_cox_ci@@), compared with unadjusted KM @@tn_unadj@@ (@@tn_unadj_ci@@).
+The Cox interval excludes zero while the weighted-KM and AIPW intervals span zero.
+This disagreement shows model dependence on @@events_tn@@ deaths, not independent confirmation of benefit.
+
+In the whole cohort, weighted KM gives @@all_km@@ (@@all_km_ci@@),
+Cox @@all_cox@@ (@@all_cox_ci@@), and AIPW @@all_aipw@@ (@@all_aipw_ci@@).
+The Cox and weighted-KM point estimates are close, while AIPW changes sign.
+The unadjusted estimate is @@all_unadj@@ (@@all_unadj_ci@@).
+Each adjusted method relies on different modeling assumptions; agreement does not prove absence of confounding.
+
+Across adjustment sets, TNBC weighted-KM estimates range from @@tn_km_min@@ to @@tn_km_max@@ days,
+and AIPW from @@tn_aipw_min@@ to @@tn_aipw_max@@.
+Changing covariate content changes nuisance fits and confounding control, so the difference cannot be
+attributed to parameter count alone. At the secondary TNBC horizon, weighted KM gives @@tn_long_km@@
+and AIPW @@tn_long_aipw@@; both intervals exclude zero, but tail support is limited.
+The day-180 landmark gives whole-cohort AIPW @@all_day180@@ rather than @@all_aipw@@ days;
+both intervals include zero. Web Tables 2 and 6 retain the complete results.
+
+\subsection{Information, balance and censoring support}
+TNBC has @@tn_complete0@@/@@tn_complete1@@ complete outcomes in controls/initiators,
+@@tn_p@@ nominal outcome-model parameters and $\rho=@@tn_rho@@$.
+The whole cohort has @@all_complete0@@/@@all_complete1@@ complete outcomes,
+@@all_p@@ parameters and $\rho=@@all_rho@@$.
+In the smaller complete-outcome arm, actual training-fit effective degrees of freedom range
+@@tn_edf_range@@ in TNBC and @@all_edf_range@@ in the whole cohort.
+These are computed from the fitted cross-fold Cox-weighted regressions, not from an arm-only reference fit.
+
+Under the primary KM treatment weights, mean absolute standardized differences change from
+@@tn_smd_before@@ to @@tn_smd_after@@ in TNBC and from @@all_smd_before@@ to @@all_smd_after@@
+in the whole cohort; the corresponding maximum post-weighting differences are @@tn_smd_max@@ and @@all_smd_max@@.
+AIPW's capped complete-outcome residual-weight effective sample sizes are @@tn_ess@@ and @@all_ess@@
+for treated/control patients. These are estimator-specific weight summaries, not a universal sample size
+or a direct variance formula for weighted KM. Full balance and support diagnostics accompany the code.
+
+Across @@n_sites@@ sites with at least 20 patients, median follow-up ranges from @@site_fu_range@@ days.
+The censoring floor binds on @@tn_km_floor@@/@@all_km_floor@@ complete cases in the two weighted-KM fits
+and @@tn_ap_floor@@/@@all_ap_floor@@ in cross-fitted AIPW.
+Exploratory Schoenfeld screens of Efron-tie reference refits identify @@ph_holm_count@@
+covariate--process combinations after within-model Holm adjustment; @@ph_finding@@.
+Penalization and few deaths limit these screens, and nonsignificance cannot establish proportional hazards
+or independent censoring. Web Table 11 reports every tested term.
+
+The revised five-device stabilizer analysis moves AIPW by up to @@max_stab_shift@@ days;
+weighted-KM shifts reach @@max_km_stab_shift@@ days (Web Table 5).
+Across 50 partitions, TNBC AIPW ranges from @@tn_split_range@@ and whole-cohort AIPW from @@all_split_range@@.
+The original six-seed repeat gives @@seed_reading@@.
+Thus computational reproducibility under one seed does not imply partition stability.
+
+\subsection{Calibration and independent stress assessment}
+In the original grid, sensitivity is approximately $@@fit_intercept@@+@@fit_slope@@\log\rho$
+with $R^2=@@fit_r2@@$. The 0.50 crossing is @@rho_threshold@@ (cell-bootstrap interval @@rho_ci@@).
+Changing the crossing to 0.25 or 1.00 yields @@rho_level_low@@ or @@rho_level_high@@;
+penalty multipliers 0.3 and 3 yield @@rho_pen_low@@ or @@rho_pen_high@@.
+Figure~\ref{fig:calibration} juxtaposes the original calibration with the independent stress cells.
+The maximum original-grid weighted-KM sensitivity ratio is @@km_grid_max@@, and the median AIPW/KM
+movement ratio is @@movement_ratio@@. These are results for the tested implementations, not a general ranking.
+
+@@stress_results@@
+
+The original validation simulation gave coverage @@original_coverage@@ with absolute bias up to
+@@original_bias@@ days. Its distributions and covariate dimensions approximate aspects of the application;
+they do not reproduce all site, missingness or treatment-selection processes.
+Neither simulation study establishes the coverage of the clinical intervals.
+
+\subsection{Design correction ladder}
+Table~\ref{tab:ladder} retains every distinct RMST rung: @@ladder_sequence@@ days.
+The full progression is @@ladder_shift@@ days, compared with @@estimator_gap@@ days between weighted KM
+and AIPW in the final TNBC clinical specification. The cohort contracts from @@tnbc_imputed@@ to @@n_tn@@.
+The original censoring-blind binary risk differences are @@binary_sequence@@ percentage points;
+they are an audit of the earlier endpoint and are not differenced against RMST.
+Successive rungs change treatment classification, eligibility or time zero, so the progression is not an additive
+decomposition of bias for one fixed estimand. Its magnitude is of similar order to estimator choice.
+
+\section{Discussion}
+The reanalysis separates three questions: whether the design defines a coherent comparison,
+whether the outcome nuisance model has adequate information, and whether treatment and censoring weights
+have support. The added Cox benchmark demonstrates why a conventional survival model is useful as a
+comparator but cannot adjudicate the observational answer. Its TNBC interval excludes zero while the
+other adjusted estimators disagree. In the whole cohort, weighted KM and Cox agree more closely,
+yet the cross-fitted AIPW estimate is sensitive to weights and partitions.
+
+The ratio $\rho$ describes one information burden. A high ratio should prompt simpler specifications,
+fold-level checks or study-specific simulation; it neither proves invalidity nor selects weighted KM.
+A low ratio cannot certify overlap, censoring support or stable weights. Its warning level depends on
+the chosen crossing, penalties and data-generating regime. The independent stress study probes those limits
+using known RMST truth, but a small collection of scenarios does not establish a universal boundary.
+Effective complexity, stronger censoring diagnostics and other outcome learners require further calibration.
+
+Clinical interpretation remains limited by prevalent treatment use, treatment-dependent landmark eligibility
+and substantial scope for confounding by indication. Performance status, comorbidity, preference, grade and
+size are incompletely measured or absent. Receptor records cannot resolve assay modality or clinically
+adjudicate conflicts, and treatment records lack external validation. Some sites offer little follow-up at
+the chosen horizon; truncation trades instability for potential bias. Covariate preprocessing and model order
+were not prospectively fixed, and the reported bootstrap conditions on the constructed feature matrix.
+The two populations overlap and the whole cohort pools distinct treatment indications.
+
+This is a treatment-contrast estimation study. It does not develop a disease classifier, clustering procedure
+or new molecular signature. Bias, coverage, RMSE and support therefore assess its statistical question;
+classification accuracy or clustering indices would assess a different target. Functional enrichment can
+interpret a selected gene set, but does not validate a treatment contrast. Independent clinical validation
+would require dated treatment initiation, appropriately timed covariates, measured receptors and adequate
+follow-up. Public treatment indicators alone are insufficient for reproducing the landmark design.
+
+The published feature-selection framework \citep{krikun} supplies context for the earlier adjustment set;
+we do not reassess its reported performance. Related manuscripts address treatment sequencing/initiation
+and cross-cohort prognostic evaluation. Their current titles, submission statuses and overlap are disclosed
+in Web Appendix J and the cover letter. This paper's conclusions concern the chemotherapy landmark
+reanalysis and the behavior of an information diagnostic. They do not establish individual treatment benefit
+or resolve chemotherapy effectiveness. The practical recommendation is to specify the target and analysis
+ordering before inspecting contrasts, assess information and weight support, and report estimator disagreement.
+
+\section*{Acknowledgments}
+The results use data generated by the TCGA Research Network. This work received no specific grant
+from public, commercial or not-for-profit funding agencies. The authors declare no conflicts of interest.
+
+Author contributions: W.F. specified and implemented the reanalysis, estimators, diagnostic and
+reproducibility pipeline and drafted the manuscript. E.K. designed and conducted the original study,
+assembled the multi-omics cohort and revised the manuscript. A.A. supervised the work and provided
+scientific framing. W.F. and E.K. contributed equally.
+
+Generative AI tools (ChatGPT, OpenAI; Claude, Anthropic) assisted with code development and documentation,
+manuscript drafting and revision, reference checking and document preparation. Patient-level source data
+were not generated or altered by these tools. Numerical results were computed by the supplied analysis code.
+The authors are responsible for verifying AI-assisted content and the final submission.
+
+\section*{Data availability}
+Public TCGA-BRCA records are distributed through the NCI Genomic Data Commons
+(\href{https://portal.gdc.cancer.gov/projects/TCGA-BRCA}{TCGA-BRCA project portal})
+and \href{https://xenabrowser.net}{UCSC Xena}.
+The accompanying code-and-data supplement includes the archived clinical and derived analysis inputs,
+input digests, exclusion ledger, analysis and simulation code, generated results and execution instructions.
+Reproduction starts from these supplied inputs; it does not reconstruct the earlier omics feature-selection
+pipeline from raw assay matrices. Only public, de-identified data are analyzed and no new participant contact occurs.
+
+@@bibliography@@
+
+\section*{Supplementary Material}
+Web Appendices A--J, Web Tables 1--12, Web Figures 1--4, and the code-and-data supplement referenced in
+Sections 2--4 accompany this paper. They provide estimator equations, preprocessing and audit provenance,
+full numerical comparisons, diagnostic and sensitivity results, simulation designs and reproducibility instructions.
+
+\clearpage
+\begin{table}[p]
+\setstretch{1.85}
+\centering
+\caption{RMST contrasts over 1095 days after the day-90 landmark. Intervals are 95\% patient-bootstrap
+percentile intervals. The unadjusted benchmark compares observed groups; the adjusted methods target
+the standardized contrast under their respective assumptions. Cox denotes an outcome model.}
+\label{tab:comparison}
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{p{1.05in}p{1.45in}p{3.0in}}
+\toprule Population & Estimator & Difference, days (95\% interval)\\\midrule
+@@comparison_rows@@
+\bottomrule
+\end{tabular}
+\end{table}
+\clearpage
+\begin{table}[p]
+\setstretch{1.85}
+\centering
+\caption{TNBC design correction ladder on a common 1095-day RMST scale.
+Rungs 0--3 are unadjusted and rung 4 uses clinical weighted KM.
+Event counts use each rung's time origin. Changing the binary endpoint to RMST is a change of target,
+not an additional numerical rung. Each interval belongs to its own specification.}
+\label{tab:ladder}
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{rp{2.1in}rrp{1.7in}}
+\toprule Rung & Specification & $n$ & Deaths & RMST (95\% interval)\\\midrule
+@@ladder_rows@@
+\bottomrule
+\end{tabular}
+\end{table}
+\clearpage
+\begin{figure}[p]
+\setstretch{1.85}
+\centering
+\includegraphics[width=\textwidth,height=0.70\textheight,keepaspectratio]{figures/fig7_workflow.pdf}
+\caption{Analysis workflow, introduced at the beginning of Materials and Methods.
+The information ratio, balance and follow-up support inform interpretation; they do not automatically
+select an estimator or establish causal identification. The final step compares assumptions and sensitivity.}
+\label{fig:workflow}
+\end{figure}
+\clearpage
+\begin{figure}[p]
+\setstretch{1.85}
+\centering
+\includegraphics[width=\textwidth,height=0.70\textheight,keepaspectratio]{figures/fig8_calibration_stress.pdf}
+\caption{Original calibration and independent stress assessment. The original log-linear AIPW fit
+and its 0.50 crossing are shown with the original grid cells and new scenario means.
+The lower panel gives coverage of nominal 95\% bootstrap intervals in the stress study; bars are 95\%
+Wilson intervals for Monte Carlo uncertainty. These assess the simulated settings, not clinical coverage.
+Weighted KM and AIPW denote the adjusted implementations; Cox uses standardized outcome-model survival.}
+\label{fig:calibration}
+\end{figure}
+\end{document}

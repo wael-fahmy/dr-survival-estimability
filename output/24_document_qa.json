@@ -1,0 +1,19 @@
+{
+  "sn-article": {
+    "physical_pages": 23,
+    "counted_pages": 17,
+    "unresolved_question_marks": false,
+    "summary_words": 173,
+    "overfull_boxes": [],
+    "known_longtable_toolchain_warnings": 0,
+    "horizontal_margin_flags": []
+  },
+  "supplement": {
+    "physical_pages": 31,
+    "counted_pages": null,
+    "unresolved_question_marks": false,
+    "overfull_boxes": [],
+    "known_longtable_toolchain_warnings": 15,
+    "horizontal_margin_flags": []
+  }
+}

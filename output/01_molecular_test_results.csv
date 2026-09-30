@@ -1,0 +1,13 @@
+molecular_tests.gene_symbol,molecular_tests.test_result,n
+ERBB2,Negative,932
+ESR1,Positive,833
+PGR,Positive,720
+PGR,Negative,365
+ESR1,Negative,257
+ERBB2,Positive,245
+ERBB2,Test Value Reported,241
+ERBB2,Equivocal,205
+ERBB2,Copy Number Reported,104
+PGR,Equivocal,4
+ESR1,Equivocal,2
+ERBB2,Unknown,1

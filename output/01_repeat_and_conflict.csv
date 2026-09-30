@@ -1,0 +1,4 @@
+gene,receptor,patients,rows,patients_multi_test,max_tests_one_patient,patients_conflicting,patients_tested_no_PN_result
+ESR1,ER,1048,1092,35,4,8,2
+PGR,PR,1047,1089,33,4,5,4
+ERBB2,HER2,984,1728,407,7,18,24

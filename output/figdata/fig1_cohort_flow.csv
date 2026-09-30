@@ -1,0 +1,13 @@
+step,rule,n_before,n_dropped,n_after,panel
+0,patients with an overall-survival record,,,1076,Analysis cohort (day-90 landmark)
+1,missing survival data,1076.0,0.0,1076,Analysis cohort (day-90 landmark)
+2,died or censored before day 90 (landmark not reached),1076.0,57.0,1019,Analysis cohort (day-90 landmark)
+3,received chemotherapy but start date missing (exposure undefined at the landmark),1019.0,29.0,990,Analysis cohort (day-90 landmark)
+4,chemotherapy start date before diagnosis (implausible),990.0,2.0,988,Analysis cohort (day-90 landmark)
+0,cohort frame (patients in causal_features_dataset.csv),,,1076,"TNBC, directly measured receptors"
+1,ER status not directly measured (equivocal/conflicting/not tested),1076.0,57.0,1019,"TNBC, directly measured receptors"
+2,PR status not directly measured,1019.0,7.0,1012,"TNBC, directly measured receptors"
+3,HER2 status not directly measured,1012.0,102.0,910,"TNBC, directly measured receptors"
+4,ER positive,910.0,704.0,206,"TNBC, directly measured receptors"
+5,PR positive,206.0,14.0,192,"TNBC, directly measured receptors"
+6,HER2 positive,192.0,36.0,156,"TNBC, directly measured receptors"

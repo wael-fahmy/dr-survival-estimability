@@ -1,0 +1,2 @@
+level,fit_intercept,fit_slope,fit_r2,threshold_rho_fitted,threshold_rho_empirical,threshold_rho_lo,threshold_rho_hi,n_threshold_bootstrap,ipcwkm_max_ratio_anywhere,median_excess_aipw_over_km,n_grid_cells,n_replicates,k_folds,tau
+0.5,0.7815934108387396,0.24111198979771664,0.9002139819412098,0.311021050444174,0.38971222554351126,0.28014071186414946,0.3473444081472723,2000,0.4704715642123948,2.1620531559152427,32,60,5,1095

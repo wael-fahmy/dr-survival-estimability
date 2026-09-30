@@ -1,0 +1,59 @@
+{
+  "scenarios": [
+    {
+      "id": 0,
+      "regime": "ph_conditional_censoring",
+      "n": 136,
+      "p": 24,
+      "target_events": 16,
+      "base": 0.00019030106896786157
+    },
+    {
+      "id": 1,
+      "regime": "ph_conditional_censoring",
+      "n": 988,
+      "p": 27,
+      "target_events": 72,
+      "base": 0.00011312712067995044
+    },
+    {
+      "id": 2,
+      "regime": "delayed_benefit",
+      "n": 136,
+      "p": 24,
+      "target_events": 16,
+      "base": 0.0001739438281414359
+    },
+    {
+      "id": 3,
+      "regime": "delayed_benefit",
+      "n": 988,
+      "p": 27,
+      "target_events": 72,
+      "base": 0.00010364303575081504
+    },
+    {
+      "id": 4,
+      "regime": "nonlinear_heavy_tail",
+      "n": 136,
+      "p": 24,
+      "target_events": 16,
+      "base": 0.00018541808308950245
+    },
+    {
+      "id": 5,
+      "regime": "nonlinear_heavy_tail",
+      "n": 988,
+      "p": 27,
+      "target_events": 72,
+      "base": 0.00010538655158156415
+    }
+  ],
+  "seed": 20260802,
+  "replicates_per_cell": 200,
+  "inner_bootstrap_replicates": 199,
+  "code_sha256": "9302b4a0424fd0252ea8f1d2019e87017242f761f2593b337ff1cf4e9c95eaeb",
+  "truth": "analytic conditional RMST averaged over each replicate covariate sample",
+  "bootstrap": "patient resampling; fixed seed within each fitted AIPW procedure",
+  "coverage": "conditional on successful point estimate and >=95% successful inner fits; failures tabulated"
+}

@@ -1,0 +1,4 @@
+step,rule,n_before,n_dropped,n_after
+0,records in the survival source,,,1076
+1,missing OS or OS.time,1076.0,0.0,1076
+2,non-positive follow-up time,1076.0,0.0,1076

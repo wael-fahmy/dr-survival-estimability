@@ -1,0 +1,6 @@
+step,rule,n_before,n_dropped,n_after
+0,patients with an overall-survival record,,,1076
+1,missing survival data,1076.0,0.0,1076
+2,died or censored before day 90 (landmark not reached),1076.0,57.0,1019
+3,received chemotherapy but start date missing (exposure undefined at the landmark),1019.0,29.0,990
+4,chemotherapy start date before diagnosis (implausible),990.0,2.0,988

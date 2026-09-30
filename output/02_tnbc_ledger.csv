@@ -1,0 +1,8 @@
+step,rule,n_before,n_dropped,n_after
+0,cohort frame (patients in causal_features_dataset.csv),,,1076
+1,ER status not directly measured (equivocal/conflicting/not tested),1076.0,57.0,1019
+2,PR status not directly measured,1019.0,7.0,1012
+3,HER2 status not directly measured,1012.0,102.0,910
+4,ER positive,910.0,704.0,206
+5,PR positive,206.0,14.0,192
+6,HER2 positive,192.0,36.0,156

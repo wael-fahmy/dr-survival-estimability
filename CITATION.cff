@@ -1,0 +1,25 @@
+cff-version: 1.2.0
+message: "If you use this code or data, please cite the paper. The preprint reference will be added here once it is posted."
+title: "Design and outcome-model estimability in doubly robust survival analysis: code and data"
+type: software
+version: 1.0.0
+license: MIT
+authors:
+  - family-names: Fahmy
+    given-names: Wael
+    affiliation: Lakehead University
+    email: wfahmy@lakeheadu.ca
+  - family-names: Krikun
+    given-names: Elena
+    affiliation: Lakehead University
+  - family-names: Alkhateeb
+    given-names: Abedalrhman
+    affiliation: Lakehead University
+abstract: "Reproduction code and data for a reanalysis of chemotherapy and survival in TCGA breast cancer: design audits, landmark RMST contrasts with weighting-only, Cox and cross-fitted doubly robust estimators, and a simulation-calibrated parameter-to-information ratio for outcome-model estimability."
+keywords:
+  - causal inference
+  - censoring
+  - doubly robust estimation
+  - landmark analysis
+  - restricted mean survival time
+  - TCGA-BRCA

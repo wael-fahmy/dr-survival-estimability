@@ -1,0 +1,3 @@
+arm,arm_label,tau,events,sd_restricted_time,mde_main_effect_days,mde_subgroup_difference_days,meets_event_floor
+TNBC_chemo,Chemotherapy in TNBC,1095,16,274.9290990809892,139.60269297740436,279.2053859548087,False
+ALL_chemo,"Chemotherapy, whole cohort",1095,72,226.40401448054027,41.11002494921052,82.22004989842104,True

@@ -1,0 +1,106 @@
+{
+  "primary_points": [
+    {
+      "population": "TNBC_chemo",
+      "adjustment": "CLINICAL",
+      "estimator": "AIPW (cross-fitted)",
+      "recomputed": 19.464229921161383,
+      "saved": 19.464229921161383,
+      "abs_diff": 0.0
+    },
+    {
+      "population": "TNBC_chemo",
+      "adjustment": "CLINICAL",
+      "estimator": "IPCW-KM contrast",
+      "recomputed": 55.04066052168196,
+      "saved": 55.04066052168196,
+      "abs_diff": 0.0
+    },
+    {
+      "population": "TNBC_chemo",
+      "adjustment": "EXISTING",
+      "estimator": "AIPW (cross-fitted)",
+      "recomputed": -5.413769524026075,
+      "saved": -5.413769524026075,
+      "abs_diff": 0.0
+    },
+    {
+      "population": "TNBC_chemo",
+      "adjustment": "EXISTING",
+      "estimator": "IPCW-KM contrast",
+      "recomputed": 28.609302428765545,
+      "saved": 28.609302428765545,
+      "abs_diff": 0.0
+    },
+    {
+      "population": "TNBC_chemo",
+      "adjustment": "UNION",
+      "estimator": "AIPW (cross-fitted)",
+      "recomputed": 42.04373749709569,
+      "saved": 42.04373749709569,
+      "abs_diff": 0.0
+    },
+    {
+      "population": "TNBC_chemo",
+      "adjustment": "UNION",
+      "estimator": "IPCW-KM contrast",
+      "recomputed": 45.775027201134094,
+      "saved": 45.775027201134094,
+      "abs_diff": 0.0
+    },
+    {
+      "population": "ALL_chemo",
+      "adjustment": "CLINICAL",
+      "estimator": "AIPW (cross-fitted)",
+      "recomputed": -8.323068480277989,
+      "saved": -8.323068480277989,
+      "abs_diff": 0.0
+    },
+    {
+      "population": "ALL_chemo",
+      "adjustment": "CLINICAL",
+      "estimator": "IPCW-KM contrast",
+      "recomputed": 37.798531507985444,
+      "saved": 37.79853150798544,
+      "abs_diff": 7.105427357601002e-15
+    },
+    {
+      "population": "ALL_chemo",
+      "adjustment": "EXISTING",
+      "estimator": "AIPW (cross-fitted)",
+      "recomputed": -8.384615781260505,
+      "saved": -8.384615781260505,
+      "abs_diff": 0.0
+    },
+    {
+      "population": "ALL_chemo",
+      "adjustment": "EXISTING",
+      "estimator": "IPCW-KM contrast",
+      "recomputed": 17.96266398966941,
+      "saved": 17.96266398966941,
+      "abs_diff": 0.0
+    },
+    {
+      "population": "ALL_chemo",
+      "adjustment": "UNION",
+      "estimator": "AIPW (cross-fitted)",
+      "recomputed": -20.54729610386666,
+      "saved": -20.54729610386666,
+      "abs_diff": 0.0
+    },
+    {
+      "population": "ALL_chemo",
+      "adjustment": "UNION",
+      "estimator": "IPCW-KM contrast",
+      "recomputed": 38.07731520645882,
+      "saved": 38.07731520645882,
+      "abs_diff": 0.0
+    }
+  ],
+  "point_checks_passed": 12,
+  "stress_rows": 4800,
+  "stress_cells": 6,
+  "methods": 4,
+  "failed_estimator_replicates": 1,
+  "original_bootstrap_and_calibration": "Preserved existing outputs; not rerun for this revision"
+}

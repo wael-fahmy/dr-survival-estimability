@@ -1,0 +1,6 @@
+numpy==2.4.4
+pandas==2.3.3
+scipy==1.17.1
+matplotlib==3.11.1
+lifelines==0.30.3
+PyMuPDF==1.27.2.3

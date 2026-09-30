@@ -1,0 +1,17 @@
+population,treatment_arm,horizon,at_risk,observed_deaths
+TNBC_chemo,0,365,31,3
+TNBC_chemo,0,730,20,4
+TNBC_chemo,0,1095,11,9
+TNBC_chemo,0,1825,5,11
+TNBC_chemo,1,365,71,3
+TNBC_chemo,1,730,52,6
+TNBC_chemo,1,1095,37,7
+TNBC_chemo,1,1825,25,9
+ALL_chemo,0,365,452,18
+ALL_chemo,0,730,292,36
+ALL_chemo,0,1095,208,56
+ALL_chemo,0,1825,120,76
+ALL_chemo,1,365,333,5
+ALL_chemo,1,730,238,9
+ALL_chemo,1,1095,173,16
+ALL_chemo,1,1825,106,19

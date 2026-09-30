@@ -1,0 +1,3 @@
+Figure 1. Six sequential workflow boxes: audit inputs; specify the day-90 landmark RMST contrast; assess information and weight support; compare four estimators; challenge assumptions using sensitivity analysis and simulation; interpret uncertainty and identification limits.
+
+Figure 2. Top: original AIPW calibration cells and fitted sensitivity curve against the parameter-to-information ratio, with new AIPW, weighted KM and Cox stress cells. Bottom: coverage in six stress scenarios with Monte Carlo confidence bars. Cox coverage is lowest in the larger delayed-benefit scenario. The horizontal reference is nominal 95 percent coverage.

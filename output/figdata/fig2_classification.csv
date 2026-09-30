@@ -1,0 +1,5 @@
+category,n,evidence
+observed alive at 5 y,201,observed
+died within 5 y,100,observed
+"died after 5 y, coded survivor (observed alive at 5 y)",50,observed
+"censored before 5 y, coded survivor",725,assigned without evidence

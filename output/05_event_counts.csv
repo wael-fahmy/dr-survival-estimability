@@ -1,0 +1,8 @@
+landmark,subgroup,n,tau,events,n_treated,n_control,events_treated,events_control
+90,TNBC,136,1095,16,90,46,7,9
+90,TNBC,136,1825,20,90,46,9,11
+90,ALL,988,1095,72,400,588,16,56
+90,HR_pos_HER2_neg,536,1095,26,190,346,3,23
+90,HR_pos_HER2_neg,536,1825,35,190,346,4,31
+90,HER2_pos,162,1095,12,80,82,2,10
+90,HER2_pos,162,1825,14,80,82,2,12
