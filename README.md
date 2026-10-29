@@ -2,7 +2,7 @@
 
 Code and data for the paper *Design and outcome-model estimability in doubly robust survival analysis: a breast cancer reanalysis* by Wael Fahmy, Elena Krikun and Abedalrhman Alkhateeb (Department of Computer Science, Lakehead University).
 
-**Preprint:** link to be added. **Archived release:** DOI to be added.
+**Preprint:** [link](https://doi.org/10.64898/2026.09.29.26364358) **Archived release:** DOI to be added.
 
 The paper reanalyzes chemotherapy and survival in TCGA breast cancer (TCGA-BRCA). It audits the observed-data design (treatment coding, fixed-horizon outcomes under censoring, receptor imputation), then estimates adjusted restricted mean survival time (RMST) contrasts over 1095 days after a day-90 landmark with weighting-only, Cox outcome-model and cross-fitted doubly robust (AIPW) estimators. It introduces a parameter-to-information ratio that summarizes how much a complete-outcome regression is asked to estimate from the available events, with a simulation-calibrated warning level.
 
